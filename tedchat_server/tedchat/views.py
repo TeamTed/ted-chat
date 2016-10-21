@@ -3,22 +3,18 @@ from datetime import datetime
 from django.shortcuts import render
 from django.contrib.auth.models import User
 
-from models import Message
-
-from django.http import JsonResponse
-
+import jwt
 from rest_framework_jwt.settings import api_settings
 
-import jwt
+#from django.http import HttpResponse #we're always going to respond with a
+                                      #Json response so we don't need this
+from django.http import JsonResponse
+
+from models import Message
 
 from rest_framework_jwt.authentication import BaseJSONWebTokenAuthentication
 
-jwt_fail_dictionary = {
-        'error' : 'jwt authentication failed'
-        }
-
 datetime_format = '%d/%m/%Y %H:%M:%S'
-
 
 def check_jwt(jwt_string):
     """
