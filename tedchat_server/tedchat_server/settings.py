@@ -25,6 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # TODO generate a new key before production
 SECRET_KEY = 'p0$41m9m+=_hf9os+h*j$%3$k!&0)4742crr63-fzm*@t-4nul'
 
+#redirect http requests to https
+SECURE_SSL_REDIRECT = True
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
