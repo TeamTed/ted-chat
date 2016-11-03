@@ -8,24 +8,38 @@
 #ifndef CONTACT_H
 #define CONTACT_H
 
-#pragma once Types.h 
+#include "Types.h" 
 
 class Contact{
 public:
 	Contact();
 	Contact(const std::string &name, const PublicKey &key);
-	virtual ~ ();
 
-	std::string getName();
-	void setName(const std::string &name);
+	std::string getName() const{
+		return m_name;
+	}
 
-	PublicKey getPublicKey();
-	void setPublicKey(const PublicKey &key);
+	void setName(const std::string &name){
+		m_name = name;
+	}
 
-// Probably replace with function that takes secret and outputs session key
-	PublicKey getSessionPublicKey();
-	void setSessionPublicKey(const PublicKey &key);
+	PublicKey getPublicKey() const{
+		return m_publickey;
+	}
 
+	void setPublicKey(const PublicKey &key){
+		m_publickey = key;
+	}
+
+	// Probably replace with function that takes secret and outputs session key
+	PublicKey getSessionPublicKey() const{
+		return m_session_publickey;
+	}
+
+	void setSessionPublicKey(const PublicKey &key){
+		m_session_publickey = key;
+	}
+	
 private:
 	std::string m_name;
 	PublicKey m_publickey;
@@ -36,16 +50,39 @@ private:
 class SenderContact : public Contact
 {
 public:
-	SenderContact(const std::string &name,\
+	SenderContact(const std::string &name,
 			const PublicKey &public_key,
 			const PrivateKey &private_key);
-	virtual ~Sender ();
+	//virtual ~Sender ();
 
-	getPrivateKey();
-	setPrivateKey(const Key &key);
+	PrivateKey getPrivateKey() const{
+		return m_privatekey;
+	}
+
+	void setPrivateKey(const Key &key){
+		m_privatekey = PrivateKey(key);
+	}
 	
+	std::string getPassword() const{
+			return m_password;
+	}
+
+	void setPassword(const std::string  &pass){
+		m_password = pass;
+	}
+
+	std::string getJWT() const{
+		return m_jwt;
+	}
+
+	void setJWT(const std::string  &jwt){
+		m_jwt = jwt;
+	}
+
 private:
+	std::string m_password;
 	PrivateKey m_privatekey;
+	std::string m_jwt;	
 };
 
 #endif /* !CONTACT_H */
