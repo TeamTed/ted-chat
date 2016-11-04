@@ -6,16 +6,18 @@
 #define MESSAGE_H
 
 #include "Types.h" 
-#include "Contact.h"
+//#include "Contact.h"
 
 class Message {
 
 	public:
 		
-	Message(const SenderContact &sender,
-			const Contact &receiver,
-			const Plaintext &plaintext) : 
-	m_sender(sender), m_receiver(receiver), m_plaintext(plaintext){
+	Message(const std::string sender_username,
+			const std::string receiver_username,
+			const std::string plaintext) : 
+	m_sender(sender_username),
+	m_receiver(receiver_username),
+	m_plaintext(plaintext){
 		
 	}
 
@@ -23,14 +25,14 @@ class Message {
 		return m_plaintext;
 	}
 	
-	Contact getReceiver() const{
+	std::string getReceiverUsername() const{
 		return m_receiver;
 	}
 
 private:
-	SenderContact	m_sender;
-	Contact			m_receiver;
-	Plaintext		m_plaintext;
+	std::string	m_sender;
+	std::string	m_receiver;
+	std::string	m_plaintext;
 };
 
 #endif /* MESSAGE_H */

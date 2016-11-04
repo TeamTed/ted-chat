@@ -12,8 +12,12 @@
 
 class Contact{
 public:
-	Contact();
-	Contact(const std::string &name, const PublicKey &key);
+	Contact(){
+	}
+
+	Contact(const std::string &name){
+		setName(name);
+	}
 
 	std::string getName() const{
 		return m_name;
@@ -50,10 +54,6 @@ private:
 class SenderContact : public Contact
 {
 public:
-	SenderContact(const std::string &name,
-			const PublicKey &public_key,
-			const PrivateKey &private_key);
-	//virtual ~Sender ();
 
 	PrivateKey getPrivateKey() const{
 		return m_privatekey;

@@ -8,8 +8,8 @@ all:
 		-o main\
 		-lcurl\
 		main.cpp\
-		Server.cpp
-
+		Server.cpp\
+		curl_wrapper.cpp
 
 # vim:ft=make
 #

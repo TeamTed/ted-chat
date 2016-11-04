@@ -31,7 +31,7 @@ public:
 	void authenticate(SenderContact &);//sender contact is not const because
 									   //we cache the jwt inside.
 	void send(SenderContact &sender, const Message &message);
-	void get_messages(const SenderContact &);
+	std::vector<Message> get_messages(SenderContact &);
 
 
 private:
