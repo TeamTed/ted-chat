@@ -23,11 +23,13 @@ rl.question("Please enter message: ", function(plaintext) {
     var cipher = sjcl.encrypt(pubkey, plaintext); //defaults to AES
     console.log(cipher);
     var signature = signKeys.sec.sign(cipher);
+    //console.log(signature);
+    
+    //below will be moved to decrypt function
     console.log(signKeys.pub.verify(cipher, signature)); //=> true
     var result = sjcl.decrypt(seckey, cipher);
     console.log(result);
     rl.close();
 });
-
 
 
