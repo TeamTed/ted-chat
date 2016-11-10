@@ -2,8 +2,9 @@
  * Created by mac on 11/8/16.
  */
 
-const sjcl = require('sjcl');
+const sjcl = require('sjcl'); //import sjcl library
 
+//Check that library works
 console.log('SJCL sanity test start.');
 
 var ciphertext = sjcl.encrypt("password", "Hello World!")
@@ -14,7 +15,7 @@ console.log(plaintext)
 
 console.log('SJCL sanity test done.');
 
-//Encrypt
+//ECDH Encrypt
 var keys = sjcl.ecc.elGamal.generateKeys(256);
 
 var pubkem = keys.pub.kem(); //KEM is Key Encapsulation Mechanism
@@ -27,7 +28,7 @@ var result = sjcl.decrypt(seckey, cipher);
 
 console.log(plain === result); //true
 
-//Sign
+//ECDH Sign and Verify
 var signKeys = sjcl.ecc.ecdsa.generateKeys(256);
 
 var hashOfPlainText = "abc123"; //dummy hash
