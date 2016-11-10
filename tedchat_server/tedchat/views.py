@@ -80,7 +80,7 @@ def issue_jwt_view(request):
     payload = jwt_payload_handler(user_object)
     token = jwt_encode_handler(payload)
     return JsonResponse({
-        'jtw' : token,
+        'jwt' : token,
         })
 
 def post_message_view(request):
