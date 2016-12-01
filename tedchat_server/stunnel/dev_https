@@ -7,6 +7,6 @@ foreground = yes
 output = stunnel.log
 
 [https]
-accept=8282
+accept=443
 connect=8181
 TIMEOUTclose=1
