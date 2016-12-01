@@ -2,6 +2,7 @@ pid=
 
 cert = /etc/letsencrypt/live/www.tedchat.online-0001/fullchain.pem
 key = /etc/letsencrypt/live/www.tedchat.online-0001/privkey.pem
+ciphers = TLS_RSA_WITH_3DES_EDE_CBC_SHA
 sslVersion = TLSv1.2
 foreground = yes
 output = stunnel.log
