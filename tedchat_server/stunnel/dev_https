@@ -1,6 +1,6 @@
 pid=
 
-cert = stunnel/stunnel.pem
+cert = /etc/letsencrypt/live/www.tedchat.online-0001/fullchain.pem
 sslVersion = SSLv3
 foreground = yes
 output = stunnel.log
