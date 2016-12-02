@@ -8,6 +8,11 @@
 #ifndef CONTACT_H
 #define CONTACT_H
 
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <iostream>
+
 #include "Types.h" 
 
 class Contact{
@@ -17,6 +22,15 @@ public:
 
 	Contact(const std::string &name){
 		setName(name);
+		std::ifstream pk_file(name+".publickey");
+		if(pk_file.is_open()){
+			std::stringstream buffer;
+			buffer << pk_file.rdbuf();
+			setPublicKey(buffer.str());
+		} else {
+			std::cout<<"no contact \"" + name + "\" found...\n";
+			//TODO better error handling.
+		}
 	}
 
 	std::string getName() const{
@@ -55,11 +69,25 @@ class SenderContact : public Contact
 {
 public:
 
+	SenderContact(const std::string &name) :
+		Contact(name){
+			std::ifstream pk_file(name+".privatekey");
+		if(pk_file.is_open()){
+			std::stringstream buffer;
+			buffer << pk_file.rdbuf();
+			setPublicKey(buffer.str());
+		} else {
+			std::cout<<"no contact \"" + name + "\" found...\n";
+			//TODO better error handling.
+		}
+	}
+
+
 	PrivateKey getPrivateKey() const{
 		return m_privatekey;
 	}
 
-	void setPrivateKey(const Key &key){
+	void setPrivateKey(const PrivateKey &key){
 		m_privatekey = PrivateKey(key);
 	}
 	

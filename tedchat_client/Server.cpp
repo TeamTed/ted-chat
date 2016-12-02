@@ -47,8 +47,12 @@ void Server::authenticate(SenderContact &user){
 		user.setJWT(*token);
 }
 
-void Server::send(SenderContact &sender, const Message &message){
+//sender is not const, because it may attempt to reauthenticate which calls a
+//non-const function.
+void Server::send(SenderContact &sender, const OutgoingMessage &message){
 	while(true){
+		std::cout << "while(true){" << std::endl;
+
 	auto response = get_json_for(
 						c_server_url + "post",
 						{
@@ -60,6 +64,7 @@ void Server::send(SenderContact &sender, const Message &message){
 		auto error = response.find("error");
 		if(error == response.end()){
 			std::cout << "message sent" << std::endl;
+			return;
 		} else {
 			//error reported
 			if( *error == "jwt expired"){
@@ -70,12 +75,13 @@ void Server::send(SenderContact &sender, const Message &message){
 				//some other error happened from which we can not easily recover
 				std::cout << "error sending message: " <<
 					*error << std::endl;
+				return;
 			}
 		}
 	}
 }
 
-std::vector<Message> Server::get_messages(SenderContact &sender){
+MessageSet Server::get_messages(SenderContact &sender){
 	auto response = get_json_for(
 						c_server_url + "get",
 						{
@@ -84,7 +90,7 @@ std::vector<Message> Server::get_messages(SenderContact &sender){
 					);
 		auto error = response.find("error");
 		if(error == response.end()){
-			std::cout << "retrieved" << std::endl;
+			//std::cout << "retrieved" << std::endl;
 		} else {
 			//error reported
 			if( *error == "jwt expired"){
@@ -97,25 +103,24 @@ std::vector<Message> Server::get_messages(SenderContact &sender){
 					*error << std::endl;
 			}
 		}
+		
 		auto json_messages = response.find("messages");
-		std::vector<Message> return_vec;
+		MessageSet return_vec;
 		for (auto &e : *json_messages) {
-			std::cout << "!!!" << std::endl;
 
 			std::string sender_field = e["sender"];
-			std::cout << sender_field  << std::endl;
 			std::string receiver_field = e["receiver"];
-			std::cout << receiver_field  << std::endl;
 			std::string text_field = e["text"];
-			std::cout << text_field << std::endl;
+			//TODO error check for missing fields
 
-			Message new_message(
+
+			IncomingMessage new_message(
 				sender_field,
 				receiver_field,
 				text_field
 				);
-			std::cout << "nnnnnn" << std::endl;
+
 			return_vec.push_back(new_message);
 		}
-	return std::vector<Message>();
+	return return_vec;
 }

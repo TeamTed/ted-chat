@@ -15,7 +15,7 @@
 
 #include "curl_wrapper.hpp"
 
-typedef std::vector<Message> MessageSet;
+typedef std::vector<IncomingMessage> MessageSet;
 
 enum server_response{
 
@@ -30,12 +30,12 @@ public:
 	void register_user(const SenderContact &new_user);
 	void authenticate(SenderContact &);//sender contact is not const because
 									   //we cache the jwt inside.
-	void send(SenderContact &sender, const Message &message);
-	std::vector<Message> get_messages(SenderContact &);
+	void send(SenderContact &sender, const OutgoingMessage &message);
+	std::vector<IncomingMessage> get_messages(SenderContact &);
 
 
 private:
-	const std::string c_server_url = "http://127.0.0.1:8000/tedchat/";
+	const std::string c_server_url = "https://www.tedchat.online/tedchat/";
 };
 
 #endif /* !SERVER_H */
