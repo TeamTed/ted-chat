@@ -13,24 +13,59 @@
 #include <sstream>
 #include <iostream>
 
+#include "json.hpp"
+
 #include "Types.h" 
+
+
 
 class Contact{
 public:
-	Contact(){
+
+	//keep track of the last datetime i got a message from this contact XXX
+
+	Contact(){ //XXX take this out at some point
 	}
 
-	Contact(const std::string &name){
-		setName(name);
-		std::ifstream pk_file(name+".publickey");
-		if(pk_file.is_open()){
-			std::stringstream buffer;
-			buffer << pk_file.rdbuf();
-			setPublicKey(buffer.str());
+	//construct a Contact from a json object
+	Contact(nlohmann::json j){
+		assert(j.is_object());
+
+		//set the username element;
+		auto username = j.find("username");
+		if (username != j.end()) {
+			setName(*username);			
 		} else {
-			std::cout<<"no contact \"" + name + "\" found...\n";
-			//TODO better error handling.
+			std::cout << "no username found in contact. \n" <<
+				j;
+			assert(false);
 		}
+
+		//set the public key
+		auto publickey = j.find("publickey");
+		if (publickey != j.end()) {
+			setPublicKey(*publickey);			
+		} else {
+			std::cout << "no publickey found in contact. \n" <<
+				j;
+			assert(false);
+		}
+
+		//set the session key
+		auto sessionkey = j.find("sessionkey");
+		if (sessionkey != j.end()) {
+			setSessionPublicKey(*sessionkey);			
+		} // no else, it's fine to not have a sessionkey, right? XXX
+	}
+
+	nlohmann::json to_json(){
+		nlohmann::json j;
+		j["username"] = getName();
+		j["publickey"] = getPublicKey();
+		j["sessionkey"] = getSessionPublicKey();
+		//TODO save message history
+
+		return j;
 	}
 
 	std::string getName() const{
@@ -58,9 +93,16 @@ public:
 		m_session_publickey = key;
 	}
 	
+	//called after I send a message if renegotiation conditions are met
+	void renegotiate_temp_key();
+
 private:
 	std::string m_name;
 	PublicKey m_publickey;
+
+	//Renegotiated
+	//Updated on each receive 
+	PublicKey m_temp_pk;
 
 	PublicKey m_session_publickey;
 };
