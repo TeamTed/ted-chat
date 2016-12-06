@@ -3,6 +3,7 @@
  */
 const sjcl = require('sjcl');
 
+//takes plaintext and appends renegotiation key for session renegotiation(WIP)
 function buildPayload(plaintext) {
     var renegKey = sjcl.ecc.elGamal.generateKeys(256);
     renegPublicKey = renegKey.pub;

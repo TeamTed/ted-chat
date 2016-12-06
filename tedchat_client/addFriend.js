@@ -4,6 +4,7 @@
 const user = require('./User');
 const Friend = require('./Friend');
 
+//adds friend object to friends array
 function addFriend(user, name, publicKey) {
     friend = new Friend(name, publicKey);
     user.friends.push(friend);
